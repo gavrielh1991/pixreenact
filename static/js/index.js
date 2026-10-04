@@ -1,0 +1,12 @@
+document.addEventListener('DOMContentLoaded', function () {
+  var options = {
+    slidesToScroll: 1,
+    slidesToShow: 1,
+    loop: true,
+    infinite: true,
+    autoplay: false,
+  };
+
+  // Initialize all div with carousel class
+  bulmaCarousel.attach('.carousel', options);
+});

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="PixReenact: Pixel-Conditioned Causal Video Diffusion for Streaming Head-Avatar Reenactment">
+  <meta name="keywords" content="head avatar, reenactment, video diffusion, streaming, causal diffusion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="PixReenact: Streaming Head-Avatar Reenactment">
+  <meta property="og:description" content="Pixel-conditioned causal video diffusion for low-latency, identity-stable streaming head-avatar reenactment.">
+  <meta property="og:type" content="website">
+  <!-- TODO: og:image must be an absolute URL — update if the page is hosted elsewhere -->
+  <meta property="og:image" content="https://gavrielh1991.github.io/pixreenact/static/images/teaser.jpg">
+  <meta property="og:image:width" content="2048">
+  <meta property="og:image:height" content="512">
+  <title>PixReenact: Pixel-Conditioned Causal Video Diffusion for Streaming Head-Avatar Reenactment</title>
+
+  <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;&#127916;&lt;/text&gt;&lt;/svg&gt;">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+</head>
+<body>
+
+<!-- ============================ Hero / title ============================ -->
+<section class="hero pixr-hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">PixReenact: Pixel-Conditioned Causal Video Diffusion for Streaming Head-Avatar Reenactment</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Gavriel Habib<sup>1</sup>,</span>
+            <span class="author-block">Dvir Samuel<sup>2</sup>,</span>
+            <span class="author-block">Or Shimshi<sup>1</sup>,</span>
+            <span class="author-block">Rami Ben-Ari<sup>1</sup></span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>OriginAI, Israel</span>&nbsp;&nbsp;
+            <span class="author-block"><sup>2</sup>NVIDIA</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- TODO: replace href with the arXiv link when available -->
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" title="Paper link coming soon">
+                  <span class="icon">&#128196;</span>
+                  <span>Paper (coming&nbsp;soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" title="Code link coming soon">
+                  <span class="icon">&#128187;</span>
+                  <span>Code (coming&nbsp;soon)</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Results carousel ============================ -->
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-4 has-text-centered carousel-title">Streaming Reenactment Results</h2>
+      <p class="has-text-centered carousel-subtitle">
+        Each video shows the reference image, the driving video, and the streaming outputs of PersonaLive and PixReenact.
+      </p>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="static/videos/carousel_1.mp4" type="video/mp4">
+          </video>
+          <p class="carousel-caption">Standard benchmark &mdash; pronounced expression</p>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="static/videos/carousel_2.mp4" type="video/mp4">
+          </video>
+          <p class="carousel-caption">Standard benchmark</p>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="static/videos/carousel_3.mp4" type="video/mp4">
+          </video>
+          <p class="carousel-caption">Standard benchmark</p>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="static/videos/carousel_4.mp4" type="video/mp4">
+          </video>
+          <p class="carousel-caption">Standard benchmark &mdash; pronounced expression</p>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="static/videos/carousel_5.mp4" type="video/mp4">
+          </video>
+          <p class="carousel-caption">Self-reenactment</p>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="static/videos/carousel_6.mp4" type="video/mp4">
+          </video>
+          <p class="carousel-caption">Extreme conditions &mdash; large viewpoint change / occlusion</p>
+        </div>
+        <div class="item">
+          <video poster="" autoplay controls muted loop playsinline height="100%">
+            <source src="static/videos/carousel_7.mp4" type="video/mp4">
+          </video>
+          <p class="carousel-caption">Extreme conditions &mdash; large viewpoint change / occlusion</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Extreme conditions figure ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Extreme Viewpoints and Occlusions</h2>
+    <img src="static/images/qualitative_extreme.png" alt="Qualitative comparison under challenging viewpoints and occlusions">
+    <p class="figure-caption">
+      <b>Qualitative comparison under challenging viewpoints and occlusions.</b> Compared with PersonaLive,
+      PixReenact better preserves the reference identity while following the driver's motion.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ Long-term identity stability ============================ -->
+<section class="section pixr-alt">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Long-Term Identity Stability</h2>
+        <p class="content has-text-justified">
+          Autoregressive streaming models can slowly drift away from the reference identity as errors
+          accumulate in the generated context. PixReenact is trained with long self-rollouts and remains
+          stable far beyond its training horizon. The video below shows the first five minutes of a
+          continuous PixReenact stream: the reference appearance stays intact while the avatar keeps
+          following the driver.
+        </p>
+        <video id="long-video" controls muted playsinline preload="metadata" width="100%">
+          <source src="static/videos/long_identity_5min.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Abstract ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Streaming head-avatar reenactment aims to animate a reference image according to a live driving
+            video, requiring robust motion transfer, long-term identity stability, and low latency. Existing
+            methods often rely on specialized identity or motion representations, which can discard useful
+            visual information and inherit failure modes from external extractors. In addition, many recent
+            diffusion-based reenactment methods use offline, clip-based generation, jointly processing and
+            denoising an entire video clip before producing its output, making continuous low-latency
+            streaming difficult. We introduce <b>PixReenact</b>, a pixel-conditioned streaming reenactment
+            framework built on causal video diffusion. PixReenact conditions directly on VAE-encoded
+            reference and driving frames, without specialized identity or motion representations. To separate
+            reference identity from driver motion, we train with cross-identity pseudo supervision together
+            with corrective objectives anchored to the original reference and driving inputs. Long
+            self-rollouts reduce autoregressive drift, while state-aware dual-teacher distillation separately
+            addresses cold-start and steady-state generation. Across three cross-identity benchmarks and a
+            long-horizon streaming benchmark, PixReenact demonstrates robust cross-identity reenactment,
+            particularly under challenging conditions such as extreme viewpoints, occlusions, and pronounced
+            facial expressions, while maintaining the reference identity over long streams. A 4-NFE rolling
+            student continuously emits four frames per update with a mean emission latency of 239&nbsp;ms.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Key contributions ============================ -->
+<section class="section pixr-alt">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Key Contributions</h2>
+    <div class="content">
+      <ul class="contributions-list">
+        <li>
+          <b>Pixel-driven streaming reenactment framework</b> that conditions directly on VAE-encoded
+          reference and driving frames, without specialized identity or motion representations for
+          conditioning.
+        </li>
+        <li>
+          <b>Training strategy for robust cross-identity streaming</b>, combining cross-identity pseudo
+          supervision, corrective objectives, and long self-rollouts to mitigate driver-appearance leakage
+          and long-term autoregressive drift.
+        </li>
+        <li>
+          <b>State-aware dual-teacher distillation</b>, using separate cold-start and steady-state teachers
+          to distill a 4-NFE causal student for low-latency continuous generation.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Method ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Method Overview</h2>
+        <img src="static/images/method.png" alt="PixReenact method overview">
+        <p class="figure-caption">
+          <b>PixReenact Overview.</b> Top-left: offline cross-identity pseudo targets from real
+          reference-driver pairs, plus real self-driving data. Top-right: cold-start and steady-state
+          teachers are distilled into a 4-NFE student with DMD and corrective objectives. Bottom: reference,
+          driving, and context latents condition a causal video DiT with restricted driving attention and
+          rolling four-frame emission.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Results ============================ -->
+<section class="section pixr-alt">
+  <div class="container">
+    <h2 class="title is-3 has-text-centered">Results</h2>
+    <p class="content has-text-justified narrow-text">
+      We evaluate PixReenact on three cross-identity benchmarks &mdash; a 68-pair extreme-condition benchmark
+      (FFHQ references driven by CelebV-HQ clips with large viewpoint changes and occlusions), a 75-pair
+      public benchmark (TalkingHead-1KH and VFHQ drivers with FFHQ references), and a 70-pair NeRSemble
+      benchmark &mdash; plus a long-horizon streaming benchmark of 28 five-minute videos. We measure identity
+      preservation (ID, AdaFace cosine similarity to the reference), motion transfer (AED/APD, expression and
+      pose distances to the driver), temporal consistency (tLP), video quality (FVD), and streaming runtime.
+    </p>
+
+    <h3 class="title is-5 table-title">Extreme-condition benchmark (68 pairs)</h3>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-hoverable results-table">
+        <thead>
+          <tr>
+            <th>Method</th><th>ID &uarr;</th><th>AED &darr;</th><th>APD &darr;</th><th>tLP &darr;</th><th>FVD &darr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PersonaLive</td>
+            <td>0.472</td>
+            <td>1.295</td>
+            <td><b>0.135</b></td>
+            <td>1.866</td>
+            <td><b>643.5</b></td>
+          </tr>
+          <tr>
+            <td><b>PixReenact</b></td>
+            <td><b>0.727</b></td>
+            <td><b>1.135</b></td>
+            <td>0.169</td>
+            <td><b>1.853</b></td>
+            <td>662.5</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="content has-text-justified narrow-text">
+      PixReenact's clearest advantage in this challenging setting is its substantially stronger
+      reference-identity preservation. This highlights the importance of interpreting metrics jointly under
+      extreme viewpoints and occlusions.
+    </p>
+
+    <h3 class="title is-5 table-title">Standard cross-identity benchmarks</h3>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-hoverable results-table">
+        <thead>
+          <tr>
+            <th rowspan="2"></th><th rowspan="2">Method</th>
+            <th colspan="5">Public benchmark (75 pairs)</th>
+            <th colspan="5">NeRSemble (70 pairs)</th>
+            <th colspan="2">Runtime</th>
+          </tr>
+          <tr>
+            <th>ID &uarr;</th><th>AED &darr;</th><th>APD &darr;</th><th>tLP &darr;</th><th>FVD &darr;</th>
+            <th>ID &uarr;</th><th>AED &darr;</th><th>APD &darr;</th><th>tLP &darr;</th><th>FVD &darr;</th>
+            <th>Lat. (ms) &darr;</th><th>FPS &uarr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2" class="row-group"><i>Per-frame</i></td>
+            <td>LivePortrait</td>
+            <td>0.863</td><td>1.071</td><td>0.208</td><td>1.146</td><td>579.0</td>
+            <td>0.849</td><td>0.787</td><td>0.0840</td><td>0.763</td><td>302.4</td>
+            <td>&ndash;</td><td>18.90</td>
+          </tr>
+          <tr>
+            <td>X-Portrait</td>
+            <td>0.701</td><td>0.887</td><td>0.097</td><td>1.613</td><td>595.2</td>
+            <td>0.774</td><td>0.694</td><td>0.0461</td><td>0.795</td><td>281.2</td>
+            <td>&ndash;</td><td>0.65</td>
+          </tr>
+          <tr>
+            <td rowspan="5" class="row-group"><i>Offline</i></td>
+            <td>MegActor-&Sigma;</td>
+            <td>0.554</td><td>0.841</td><td>0.106</td><td>1.910</td><td>582.7</td>
+            <td>0.729</td><td>0.802</td><td>0.0566</td><td>0.976</td><td>247.4</td>
+            <td>&ndash;</td><td>0.49</td>
+          </tr>
+          <tr>
+            <td>Wan-Animate</td>
+            <td>0.570</td><td>0.966</td><td>0.089</td><td>1.903</td><td>579.2</td>
+            <td>0.632</td><td>0.789</td><td>0.0381</td><td>1.199</td><td>201.3</td>
+            <td>&ndash;</td><td>0.41</td>
+          </tr>
+          <tr>
+            <td>X-NeMo</td>
+            <td>0.614</td><td>0.775</td><td>0.065</td><td>1.378</td><td>449.1</td>
+            <td>0.710</td><td>0.639</td><td>0.0291</td><td>0.733</td><td>276.5</td>
+            <td>&ndash;</td><td>1.37</td>
+          </tr>
+          <tr>
+            <td>Wan-Animate-2</td>
+            <td>0.603</td><td>0.863</td><td>0.085</td><td>4.500</td><td>655.8</td>
+            <td>0.583</td><td>0.723</td><td>0.0451</td><td>1.831</td><td>276.5</td>
+            <td>&ndash;</td><td>0.29</td>
+          </tr>
+          <tr>
+            <td>FlashPortrait</td>
+            <td>0.760</td><td>0.864</td><td>0.112</td><td>3.072</td><td>633.7</td>
+            <td>0.800</td><td>0.758</td><td>0.0598</td><td>1.527</td><td>303.2</td>
+            <td>&ndash;</td><td>3.03</td>
+          </tr>
+          <tr>
+            <td rowspan="2" class="row-group"><i>Streaming</i></td>
+            <td>PersonaLive</td>
+            <td>0.662</td><td><b>0.788</b></td><td><b>0.050</b></td><td><b>1.059</b></td><td>407.1</td>
+            <td>0.734</td><td>0.824</td><td><b>0.0392</b></td><td>0.890</td><td>310.0</td>
+            <td><b>211.1</b></td><td><b>18.95</b></td>
+          </tr>
+          <tr>
+            <td><b>PixReenact</b></td>
+            <td><b>0.709</b></td><td>0.790</td><td>0.066</td><td>1.234</td><td><b>377.1</b></td>
+            <td><b>0.753</b></td><td><b>0.714</b></td><td>0.0426</td><td><b>0.803</b></td><td><b>264.8</b></td>
+            <td>238.9</td><td>16.74</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="figure-caption narrow-text">
+      Single-H200 runtime; latency is mean steady-state emission time per four-frame chunk. Better streaming
+      results are shown in bold.
+    </p>
+
+    <h3 class="title is-5 table-title">Long-horizon streaming</h3>
+    <div class="columns is-centered">
+      <div class="column is-half has-text-centered">
+        <img src="static/images/plot_mean_5min.png" alt="Long-term identity stability plot" class="plot-image">
+        <p class="figure-caption">
+          <b>Long-term identity stability.</b> Mean AdaFace similarity per minute over 28 five-minute
+          cross-identity videos. PersonaLive declines over time, while PixReenact remains stable.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Quality-latency trade-off ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Quality&ndash;Latency Trade-off</h2>
+    <p class="content has-text-justified">
+      PixReenact uses a 4-NFE rolling denoising staircase, but the number of in-flight noise levels can be
+      reduced at inference to trade quality for latency. With 3 NFEs, PixReenact matches PersonaLive's
+      latency (211&nbsp;ms) while still preserving identity far better on the extreme-condition benchmark;
+      with 2 NFEs it becomes faster than PersonaLive (187&nbsp;ms, 21.4&nbsp;FPS). Fewer NFEs generally
+      degrade motion fidelity and distribution quality (AED, APD, FVD), so the 4-NFE setting is our default.
+      Quality metrics below are measured on the extreme-condition benchmark; best and second-best values are
+      <b>bold</b> and <u>underlined</u>.
+    </p>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-hoverable results-table">
+        <thead>
+          <tr>
+            <th>Method / NFE</th><th>ID &uarr;</th><th>AED &darr;</th><th>APD &darr;</th><th>tLP &darr;</th><th>FVD &darr;</th><th>Lat. (ms) &darr;</th><th>FPS &uarr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PersonaLive</td>
+            <td>0.472</td><td>1.295</td><td><b>0.135</b></td><td><u>1.866</u></td><td><b>643.5</b></td><td><u>211.1</u></td><td><u>18.95</u></td>
+          </tr>
+          <tr>
+            <td>PixReenact, 4 NFE (1000, 750, 500, 250)</td>
+            <td>0.727</td><td><b>1.135</b></td><td><u>0.169</u></td><td><b>1.853</b></td><td><u>662.5</u></td><td>238.9</td><td>16.74</td>
+          </tr>
+          <tr>
+            <td>PixReenact, 3 NFE (1000, 500, 250)</td>
+            <td><u>0.731</u></td><td><u>1.145</u></td><td>0.174</td><td>2.008</td><td>682.9</td><td>211.4</td><td>18.92</td>
+          </tr>
+          <tr>
+            <td>PixReenact, 2 NFE (1000, 250)</td>
+            <td><b>0.770</b></td><td>1.191</td><td>0.187</td><td>1.986</td><td>753.6</td><td><b>186.6</b></td><td><b>21.44</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Qualitative comparison vs all methods ============================ -->
+<section class="section pixr-alt">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Qualitative Comparison with All Baselines</h2>
+    <img src="static/images/cross_driving_examples.png" alt="Qualitative comparison against all baselines">
+    <p class="figure-caption">
+      <b>Cross-identity reenactment against all evaluated baselines.</b> Qualitative comparisons on the
+      public (rows 1&ndash;4) and NeRSemble (rows 5&ndash;7) benchmarks. PixReenact preserves the reference
+      appearance while transferring the driver's facial motion.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ Ethics ============================ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4">Ethics &amp; Responsible Use</h2>
+    <div class="content has-text-justified">
+      <p>
+        Head-avatar reenactment can support beneficial applications such as telepresence and interactive
+        digital agents, but it can also be misused to create deceptive or non-consensual representations of
+        real people. PixReenact is a research system and is not designed to verify consent, authenticity, or
+        ownership of its inputs. Deployment should therefore require appropriate consent and authorization
+        for the identities being animated, and generated content should be clearly disclosed as synthetic
+        when it could otherwise be mistaken for authentic footage. Our experiments use established
+        research-oriented datasets and publicly available videos for research purposes only. We encourage
+        future work on provenance, watermarking, and other safeguards for responsible deployment.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BibTeX ============================ -->
+<section class="section pixr-alt" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <!-- TODO: update when the arXiv entry is available -->
+    <pre><code>@article{habib2026pixreenact,
+  author    = {Habib, Gavriel and Samuel, Dvir and Shimshi, Or and Ben-Ari, Rami},
+  title     = {PixReenact: Pixel-Conditioned Causal Video Diffusion for Streaming Head-Avatar Reenactment},
+  journal   = {arXiv preprint},
+  year      = {2026},
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            This website template is adapted from the
+            <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project page,
+            licensed under a
+            <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

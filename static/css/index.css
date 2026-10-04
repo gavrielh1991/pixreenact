@@ -1,0 +1,182 @@
+body {
+  font-family: 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
+}
+
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Hero with a subtle gradient — a deliberate departure from the plain Nerfies hero */
+.pixr-hero {
+  background: linear-gradient(170deg, #ffffff 0%, #eef4f6 65%, #e2edf0 100%);
+  border-bottom: 1px solid #dce6e9;
+}
+
+.publication-title {
+  font-family: 'Castoro', 'Georgia', serif;
+  color: #1f3a44;
+}
+
+.publication-authors {
+  font-family: 'Google Sans', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+  padding-top: 10px;
+}
+
+.publication-authors a {
+  color: #2a6f77 !important;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-links {
+  padding-top: 15px;
+}
+
+/* Alternating section background */
+.pixr-alt {
+  background-color: #f7fafb;
+}
+
+/* Carousel */
+.carousel-title {
+  color: #1f3a44;
+}
+
+.carousel-subtitle {
+  margin-bottom: 1.25rem;
+  color: #4a4a4a;
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  padding: 10px 6%;
+}
+
+.results-carousel video {
+  margin: 0;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(31, 58, 68, 0.18);
+}
+
+.carousel-caption {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #4a4a4a;
+  margin-top: 8px;
+}
+
+.slider-navigation-previous,
+.slider-navigation-next {
+  background-color: #ffffff;
+  border: 1px solid #c9d8db;
+}
+
+/* Figures */
+img {
+  max-width: 100%;
+}
+
+.figure-caption {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.plot-image {
+  max-width: 100%;
+}
+
+#long-video {
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(31, 58, 68, 0.18);
+}
+
+/* Tables */
+.table-title {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.narrow-text {
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.results-table {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.results-table td,
+.results-table th {
+  padding: 0.5em 0.75em;
+}
+
+.results-table th {
+  text-align: center !important;
+  vertical-align: middle !important;
+  background-color: #eef4f6;
+}
+
+.results-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.results-table td:first-child {
+  text-align: left;
+}
+
+.results-table .row-group {
+  background-color: #fbfdfd;
+}
+
+.std {
+  font-size: 0.75rem;
+  color: #888;
+  margin-left: 1px;
+}
+
+/* Key contributions */
+.contributions-list {
+  max-width: 820px;
+  margin-left: auto !important;
+  margin-right: auto;
+  font-size: 1.05rem;
+}
+
+.contributions-list li {
+  margin-bottom: 0.9em;
+}
+
+.contributions-list li::marker {
+  color: #2a6f77;
+}
+
